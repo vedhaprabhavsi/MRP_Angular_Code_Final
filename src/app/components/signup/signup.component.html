@@ -1,0 +1,35 @@
+<div class="col-md-12 col-sm-12 col-xs-12 offset-md-5 mt-5">
+  <div class="signup-page">
+    <div class="form">
+      <form name="signupForm" class="signup-form" (ngSubmit)="s.form.valid && onSubmit()" #s="ngForm">
+        <h1 class="text-center">SignUp Here !!</h1>
+        <div class="form-group col-md-12  col-sm-12 col-xs-12">
+          <label for="fName" class="col-md-12 col-sm-12 col-xs-12 text-left">First Name</label>
+          <input type="text" name="fName" id="fName" class="form-control" [(ngModel)]="user.fName" #fName="ngModel" required pattern="^[a-zA-Z ]*$"/>
+          <div *ngIf="!fName.valid && fName.touched" class="invalid-feedback">First Name is required and can contain only Alphabets and space</div>
+        </div>
+        <div class="form-group col-md-12  col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Last Name </label>
+          <input type="text" class="form-control"  name="lName" id="lName" [(ngModel)]="user.lName" #lName="ngModel" required pattern="^[a-zA-Z ]*$"/>
+          <div *ngIf="!lName.valid && lName.touched" class="invalid-feedback">Last Name is required and can contain only Alphabets and space</div>
+        </div>
+        <div class="form-group col-md-12  col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Date of Birth </label>
+          <input type="date" max="{{todate | date:'yyyy-MM-dd'}}" class="form-control"  name="dob" id="dob" [(ngModel)]="user.dob" #dob="ngModel" required/>
+          <div *ngIf="!dob.valid && dob.touched" class="invalid-feedback">DOB is required</div>
+        </div>
+        <div class="form-group col-md-12  col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Email ID </label>
+          <input type="text" class="form-control"  name="username" id="username" [(ngModel)]="user.username" #username="ngModel" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+          <div *ngIf="!username.valid && username.touched" class="invalid-feedback">Email should be in valid format</div>
+        </div>
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Password</label>
+          <input type="password" class="form-control"  name="password" id="password" [(ngModel)]="user.password" #password="ngModel" required pattern="^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[$@£!%*#?&]).{8,}$"/>
+          <div *ngIf="!password.valid && password.touched" class="invalid-feedback">Password should be strong</div>
+        </div>
+        <button class="btn btn-success">SIGNUP</button>
+      </form>
+    </div>
+  </div>
+</div>

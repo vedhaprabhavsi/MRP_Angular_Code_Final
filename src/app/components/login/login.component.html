@@ -1,0 +1,24 @@
+﻿<div class="col-md-12 col-sm-12 col-xs-12 offset-md-5 mt-5">
+  <div class="login-page">
+    <div class="form">
+      <form name="loginForm" class="login-form" (ngSubmit)="onSubmit()" #l="ngForm">
+        <div class="logo text-center"><img src="/assets/login_1.png" alt="" height="25%" width="25%"></div>
+        <h1 class="text-center">Login Here !!</h1>
+        <div class="form-group col-md-12  col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Email ID </label>
+          <input type="text" class="form-control"  name="username" id="username" [(ngModel)]="user.username" #username="ngModel" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+          <div *ngIf="!username.valid && username.touched" class="invalid-feedback">Email should be in valid format</div>
+        </div>
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+          <label class="col-md-12  col-sm-12 col-xs-12 text-left">Password</label>
+          <input type="password" class="form-control"  name="password" id="password" [(ngModel)]="user.password" #password="ngModel" required pattern="^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[$@£!%*#?&]).{8,}$"/>
+          <div *ngIf="!password.valid && password.touched" class="invalid-feedback">Password should have at least 8 characters, at least one uppercase,
+            one numeric and a special char</div>
+        </div>
+        <button class="btn btn-success">LOGIN</button>
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        <p class="message">New to this portal? <a routerLink="/signup">Signup Here</a></p>
+      </form>
+    </div>
+  </div>
+</div>

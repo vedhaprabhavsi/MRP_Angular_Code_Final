@@ -1,0 +1,113 @@
+<div class="col-md-12 col-sm-12 col-xs-12 offset-md-5 mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" style="float: left;" routerLink="/submit">Submit a Claim</a>
+      <a class="navbar-brand" style="float: right;" (click)="logout()">Logout</a>
+      </nav>
+    <div *ngIf="message" class="alert alert-success mt-3 mb-0">{{message}}</div>
+        <div class="reg-page">
+            <div class="form">                      
+            <form name="registerForm" class="reg-form" #r="ngForm"> 
+                <h1 class="text-center" *ngIf="this.isRegH1Visible" (click)="this.isRegH1Visible = true">Register a Member Here !!</h1>
+                <h1 class="text-center" *ngIf="this.isUpdateH1Visible" (click)="this.isUpdateH1Visible = true">Update Member details Here !!</h1>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12" *ngIf="!isRegButtonVisible" id="updateMember">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Member ID: </label>
+                    <div style="float: left;width: 70%;"><input type="text" name="memberId" id="memberId" class="form-control"  [(ngModel)]="member.memberId" #memberId="ngModel" required/>
+                    </div>
+                    <div style="float: right;width: 25%;"><button (click)="findMember()" class="btn btn-primary" *ngIf="!isRegButtonVisible">SEARCH</button></div>
+                    <div *ngIf="!memberId.valid && memberId.touched" class="invalid-feedback">Member ID is required to search!</div>
+                </div>
+                
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Name: </label>
+                    <input type="text" name="name" id="name" class="form-control" [disabled]="this.isUpdateH1Visible"  [(ngModel)]="member.name" #name="ngModel" required pattern="^[a-zA-Z ]*$"/>
+                    <div *ngIf="!name.valid && name.touched" class="invalid-feedback">Name is required and can contain only Alphabets and space</div>
+                </div>
+                <div class="form-group  col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Address: </label> 
+                    <textarea type="text"  name="address" id="address" class="form-control"  [(ngModel)]="member.address" #address="ngModel" required></textarea>
+                   <div *ngIf="!address.valid && address.touched" class="invalid-feedback">Address is required</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Country: </label>
+                    <select name="country" id="country" (change)="fetchStates()" class="form-control" [(ngModel)]="member.country" #country="ngModel" required>
+                        <option>--Select--</option>
+                        <option *ngFor="let c of cList">{{c.country}}</option>
+                    </select>
+                    <div *ngIf="!country.valid && country.touched" class="invalid-feedback">Please select a Country</div>
+                </div>
+            
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">State: </label>
+                    <select name="state" id="state" class="form-control" [(ngModel)]="member.state" #state="ngModel" required>
+                        <!-- <option>--Select--</option> -->
+                        <option *ngFor="let s of sList">{{s}}</option>
+                    </select>
+                    <div *ngIf="!state.valid && state.touched" class="invalid-feedback">Please select a State</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Email Address: </label> 
+                    <input type="text" name="email" id="email" class="form-control"  [(ngModel)]="member.email" #email="ngModel" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                    <div *ngIf="!email.valid && email.touched" class="invalid-feedback">Email is required and should be valid</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">PAN: </label> 
+                    <input type="text" name="pan" id="pan" class="form-control"  [(ngModel)]="member.pan" #pan="ngModel" required pattern="^[A-Z0-9]{12}$"/>
+                    <div *ngIf="!pan.valid && pan.touched" class="invalid-feedback">PAN is required and should contain only 12 alpha numeric characters</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Contact #: </label> 
+                    <input type="text" name="contactNum" id="contactNum" class="form-control"  [(ngModel)]="member.contactNum" #contactNum="ngModel" required pattern="^[0-9]{10}$"/>
+                    <div *ngIf="!contactNum.valid && contactNum.touched" class="invalid-feedback">Contact Number is required and should be 10 digit numeric</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Date of Birth: </label> 
+                    <input type="date" [disabled]="this.isUpdateH1Visible" (keydown.Tab)="calculateAge($event)" max="{{todate | date:'yyyy-MM-dd'}}" name="dob" id="dob" class="form-control" [(ngModel)]="member.dob" #dob="ngModel" required/>
+                    <div *ngIf="!dob.valid && dob.touched" class="invalid-feedback">DOB is required</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Registration Date: </label> 
+                    <input type="date" [disabled]="this.isUpdateH1Visible" min="{{todate | date:'yyyy-MM-dd'}}" name="regDate" id="regDate" class="form-control"  [(ngModel)]="member.regDate" #regDate="ngModel" required/>
+                    <div *ngIf="!regDate.valid && regDate.touched" class="invalid-feedback">Registration Date is required</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Age: </label> 
+                    <input type="text" [disabled]="this.isUpdateH1Visible" name="age" id="age" class="form-control"  [(ngModel)]="member.age" #age="ngModel" required pattern="^(?:1[8-9]{1}|[2-9][0-9]|100)$"/>
+                    <div *ngIf="!age.valid && age.touched" class="invalid-feedback">Age is required and should be greater than 18</div>
+                </div>
+                <div class="form-group col-md-12  col-sm-12 col-xs-12">
+                    <label class="depend col-md-12 col-sm-12 col-xs-12 text-left">Add Dependents here:</label>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td scope="col">S.No</td>
+                                <td scope="col">Name<span style="color:red">*</span></td>
+                                <td scope="col">DOB<span style="color:red">*</span></td>
+                            </tr>
+                        </thead>
+                        <tbody>.
+                            <tr *ngFor="let d of dependents; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>
+                                    <input type="text" [(ngModel)]="d.dname" [name]="'dname'+i" class="form-control" #dname="ngModel" [value]="d.dname" required pattern="^[a-zA-Z ]*$"/>
+                                    <div *ngIf="!dname.valid && dname.touched" class="invalid-feedback">Name is required</div>
+                                </td>
+                                <td>
+                                    <input type="date" max="{{todate | date:'yyyy-MM-dd'}}" [(ngModel)]="d.ddob" [name]="'ddob'+i" class="form-control" [value]="d.ddob" #ddob="ngModel" required/>
+                                    <div *ngIf="!ddob.valid && ddob.touched" class="invalid-feedback">DOB is required</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="updateBtn" *ngIf="this.isRegButtonVisible" (click)="this.isRegButtonVisible = true">
+                    <button (click)="r.form.valid && onSubmit()" class="btn btn-success">REGISTER</button>
+                </div>
+                <div class="updateBtn" *ngIf="this.isButtonVisible" (click)="this.isButtonVisible = true">
+                    <button (click)="r.form.valid && onUpdate()" class="btn btn-primary">UPDATE</button>
+                </div>                
+                <div class="form-group" *ngIf="this.isUpdateLinkVisible" (click)="this.isUpdateLinkVisible = true"><p class="message">Want to update the member details? <a (click)="dispUpdateBtn()" routerLink="/register">Update Here</a></p></div>
+                <div class="form-group" *ngIf="this.isRegLinkVisible" (click)="this.isRegLinkVisible = true"><p class="message">Want to register a new member? <a (click)="dispRegBtn()" routerLink="/register">Register Here</a></p></div>
+            </form>
+            </div>
+</div>

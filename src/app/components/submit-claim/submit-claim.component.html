@@ -1,0 +1,55 @@
+<div class="col-md-12  col-sm-12 col-xs-12 offset-md-5 mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" style="float: left;" routerLink="/register">Register a Member</a>
+        <a class="navbar-brand" style="float: right;" (click)="logout()">Logout</a>
+    </nav>
+    <div *ngIf="message" class="alert alert-success mt-3 mb-0">{{message}}</div>
+    <div class="reg-page">
+        <div class="form">
+            <form name="submitForm" class="reg-form" (ngSubmit)="c.form.valid && onSubmit()" #c="ngForm">
+                <h1 class="text-center">Submit a Claim Here !!</h1>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Member ID: </label>
+                    <input  (keydown.Tab)="getMemberDetails()" type="text" name="memberId" id="memberId" class="form-control" [(ngModel)]="claim.memberId" #memberId="ngModel" required />
+                    <div *ngIf="!memberId.valid && memberId.touched" class="invalid-feedback">Member ID is required</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">First Name: </label>
+                    <input type="text" name="fName" id="fName" class="form-control" [(ngModel)]="claim.fName" #fName="ngModel" required pattern="^[a-zA-Z ]*$"/>
+                    <div *ngIf="!fName.valid && fName.touched" class="invalid-feedback">First Name is required and can contain only Alphabets and space</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Last Name: </label>
+                    <input type="text" name="lName" id="lName" class="form-control" [(ngModel)]="claim.lName" #lName="ngModel" required pattern="^[a-zA-Z ]*$"/>
+                    <div *ngIf="!lName.valid && lName.touched" class="invalid-feedback">Last Name is required and can contain only Alphabets and space</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Date of Birth: </label>
+                    <input type="date" name="dob" id="dob" max="{{todate | date:'yyyy-MM-dd'}}" class="form-control" [(ngModel)]="claim.dob" #dob="ngModel" required />
+                    <div *ngIf="!dob.valid && dob.touched" class="invalid-feedback">DOB is required</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Date of Admission: </label>
+                    <input type="date" name="doa" id="doa" class="form-control" [(ngModel)]="claim.doa" #doa="ngModel" required />
+                    <div *ngIf="!doa.valid && doa.touched" class="invalid-feedback">Date of Admission is required</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Date of Discharge: </label>
+                    <input type="date" name="dod" id="dod" class="form-control" [(ngModel)]="claim.dod" #dod="ngModel" required />
+                    <div *ngIf="!dod.valid && dod.touched" class="invalid-feedback">Date of Discharge is required</div>
+                    <div *ngIf="dod.valid && !compareDoA()" class="invalid-feedback">Date of Discharge should be on or after Date of Admission</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Provider Name: </label>
+                    <input type="text" name="providerName" id="providerName" class="form-control" [(ngModel)]="claim.providerName" #providerName="ngModel" required />
+                    <div *ngIf="!providerName.valid && providerName.touched" class="invalid-feedback">Provider Name is required</div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="col-md-12 col-sm-12 col-xs-12 text-left">Total Bill Amount: </label>
+                    <input type="text" name="billAmt" id="billAmt" class="form-control" [(ngModel)]="claim.billAmt" #billAmt="ngModel" required pattern="^[0-9]+$"/>
+                    <div *ngIf="!billAmt.valid && billAmt.touched" class="invalid-feedback">Bill Amount is required and should be numeric</div>
+                </div>
+                <button class="btn btn-success">SUBMIT</button>
+            </form>
+        </div>
+    </div>
